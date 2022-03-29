@@ -13,3 +13,6 @@ class ShareForm(forms.Form):
     to = forms.EmailField()
     message = forms.CharField(required=False,
                               widget=forms.Textarea)
+
+class SearchForm(forms.Form):
+    query = forms.CharField()

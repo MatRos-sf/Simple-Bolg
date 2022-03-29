@@ -1,18 +1,17 @@
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from taggit.models import Tag
 
-from blog.forms import CommentForms, ShareForm
+from blog.forms import CommentForms, ShareForm, SearchForm
 from blog.models import Post
 
 """
 to do :
-    * szukanie 
     * simple test 
     * create sample
     * ściągnięcie tekstu w Txt 
@@ -98,3 +97,22 @@ def post_share(request, category, post_id):
     return render(request, "blog/post/share.html", {"post": post,
                                                     "form": share_form,
                                                     "sent": sent})
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Post.objects.filter(
+                Q(title__contains= query) |
+                Q(body__contains=query)
+            )
+    return render(request, "blog/post/search.html", {"form": form,
+                                                     'query': query,
+                                                     "results": results})
+
+
+
