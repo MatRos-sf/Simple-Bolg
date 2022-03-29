@@ -10,7 +10,14 @@ from taggit.models import Tag
 from blog.forms import CommentForms, ShareForm
 from blog.models import Post
 
-
+"""
+to do :
+    * szukanie 
+    * simple test 
+    * create sample
+    * ściągnięcie tekstu w Txt 
+    * audio słuchanie 
+"""
 
 def post_list(request, tag_slug=None):
     objects_list = Post.objects.all()
